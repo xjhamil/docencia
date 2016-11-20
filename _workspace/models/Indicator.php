@@ -40,7 +40,7 @@ class Indicator extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Nombre',
         ];
     }
 
