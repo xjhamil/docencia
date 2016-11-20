@@ -42,9 +42,9 @@ class School extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'phone' => 'Phone',
-            'address' => 'Address',
+            'name' => 'Nombre',
+            'phone' => 'Telefono',
+            'address' => 'Direccion',
         ];
     }
 
