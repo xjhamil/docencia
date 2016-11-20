@@ -42,10 +42,10 @@ class Period extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'star' => 'Star',
-            'end' => 'End',
+            //'id' => 'ID',
+            'name' => 'Nombre',
+            'star' => 'Inicio',
+            'end' => 'Fin',
         ];
     }
 
