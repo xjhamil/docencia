@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%person}}".
@@ -19,8 +20,28 @@ use Yii;
  *
  * @property Teaching[] $teachings
  */
-class Person extends \yii\db\ActiveRecord
+class Person extends ActiveRecord
 {
+    const STATUS_SINGLE = 0;
+    const STATUS_MARRIED = 1;
+    const STATUS_WIDOWER = 2;
+    const STATUS_DIVORCED = 3;
+
+    const STATUSES = [
+        Person::STATUS_SINGLE => 'Soltero',
+        Person::STATUS_MARRIED => 'Casado',
+        Person::STATUS_WIDOWER => 'Viudo',
+        Person::STATUS_DIVORCED => 'Divorciado',
+    ];
+
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
+    const GENDERS =[
+        Person::GENDER_MALE => 'Masculino',
+        Person::GENDER_FEMALE => 'Femenino'
+    ];
+
     /**
      * @inheritdoc
      */
@@ -49,14 +70,14 @@ class Person extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'identity' => 'Identity',
-            'name' => 'Name',
-            'status' => 'Status',
-            'gender' => 'Gender',
-            'birthdate' => 'Birthdate',
-            'phone' => 'Phone',
-            'address' => 'Address',
-            'picture' => 'Picture',
+            'identity' => 'Identidad',
+            'name' => 'Nombre',
+            'status' => 'Estado Civil',
+            'gender' => 'Genero',
+            'birthdate' => 'Fecha de Nacimiento',
+            'phone' => 'Telefono',
+            'address' => 'Direccion',
+            'picture' => 'Foto',
         ];
     }
 
