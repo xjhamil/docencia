@@ -13,15 +13,12 @@ use Yii;
  * @property integer $school_id
  * @property integer $course_id
  * @property integer $subject_id
- * @property string $postulation
  *
- * @property Documentation[] $documentations
  * @property Course $course
  * @property Period $period
  * @property Person $person
  * @property School $school
  * @property Subject $subject
- * @property Tracing[] $tracings
  */
 class Teaching extends \yii\db\ActiveRecord
 {
@@ -39,9 +36,8 @@ class Teaching extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id', 'postulation'], 'required'],
+            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id'], 'required'],
             [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id'], 'integer'],
-            [['postulation'], 'safe'],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
             [['period_id'], 'exist', 'skipOnError' => true, 'targetClass' => Period::className(), 'targetAttribute' => ['period_id' => 'id']],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'id']],
@@ -56,22 +52,13 @@ class Teaching extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'person_id' => 'Person ID',
-            'period_id' => 'Period ID',
-            'school_id' => 'School ID',
-            'course_id' => 'Course ID',
-            'subject_id' => 'Subject ID',
-            'postulation' => 'Postulation',
+           // 'id' => 'ID',
+            'person_id' => 'Persona',
+            'period_id' => 'Periodo',
+            'school_id' => 'Escuela',
+            'course_id' => 'Curso',
+            'subject_id' => 'Asignatura',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDocumentations()
-    {
-        return $this->hasMany(Documentation::className(), ['teaching_id' => 'id']);
     }
 
     /**
@@ -112,13 +99,5 @@ class Teaching extends \yii\db\ActiveRecord
     public function getSubject()
     {
         return $this->hasOne(Subject::className(), ['id' => 'subject_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTracings()
-    {
-        return $this->hasMany(Tracing::className(), ['teaching_id' => 'id']);
     }
 }

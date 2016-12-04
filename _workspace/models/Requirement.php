@@ -15,6 +15,17 @@ use Yii;
  */
 class Requirement extends \yii\db\ActiveRecord
 {
+
+    const TYPE_NORMAL = 0;
+    const TYPE_MANDATORY = 1;
+
+
+    const TYPES = [
+        Requirement::TYPE_NORMAL => 'Normal',
+        Requirement::TYPE_MANDATORY=> 'Obligatorio',
+
+    ];
+
     /**
      * @inheritdoc
      */
@@ -42,8 +53,8 @@ class Requirement extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'type' => 'Type',
+            'name' => 'Nombre',
+            'type' => 'Tipo',
         ];
     }
 
