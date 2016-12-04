@@ -78,4 +78,10 @@ class Course extends ActiveRecord
     {
         return $this->hasMany(Teaching::className(), ['course_id' => 'id']);
     }
+
+    public function getName()
+    {
+        return static::GRADES[$this->grade].' '.static::LEVELS[$this->level];
+    }
 }
+
