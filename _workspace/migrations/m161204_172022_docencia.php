@@ -19,6 +19,10 @@ class m161204_172022_docencia extends Migration
             'period_id' => $this->integer()->notNull(),
             'approved' => $this->boolean()
         ], $tableOptions);
+        $this->createIndex('idx_postulant_person_id', '{{%postulant}}', 'person_id');
+        $this->createIndex('idx_postulant_period_id', '{{%postulant}}', 'period_id');
+        $this->addForeignKey('fk_postulant_person_id', '{{%postulant}}', 'person_id', '{{%person}}', 'id');
+        $this->addForeignKey('fk_postulant_period_id', '{{%postulant}}', 'period_id', '{{%period}}', 'id');
 
         $this->dropForeignKey('fk_documentation_teaching_id','{{%documentation}}');
         $this->dropIndex('idx_documentation_teaching_id', '{{%documentation}}');
