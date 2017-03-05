@@ -17,6 +17,14 @@ use Yii;
  */
 class Documentation extends \yii\db\ActiveRecord
 {
+    const VALUE_YES = 1;
+    const VALUE_NO = 0;
+
+    const VALUES = [
+        Documentation::VALUE_YES => 'Si',
+        Documentation::VALUE_NO => 'No'
+    ];
+
     /**
      * @inheritdoc
      */
@@ -45,9 +53,9 @@ class Documentation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'requirement_id' => 'Requirement ID',
-            'value' => 'Value',
-            'postulant_id' => 'Postulant ID',
+            'requirement_id' => 'Requirimientos',
+            'value' => 'Aceptado',
+            'postulant_id' => 'Postulante',
         ];
     }
 

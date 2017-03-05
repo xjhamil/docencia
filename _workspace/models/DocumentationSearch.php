@@ -12,6 +12,10 @@ use app\models\Documentation;
  */
 class DocumentationSearch extends Documentation
 {
+    public $period_search;
+    public $person_search;
+    public $requirement_search;
+
     /**
      * @inheritdoc
      */
@@ -19,6 +23,7 @@ class DocumentationSearch extends Documentation
     {
         return [
             [['id', 'requirement_id', 'value', 'postulant_id'], 'integer'],
+            [['period_search', 'person_search', 'requirement_search'], 'safe'],
         ];
     }
 
@@ -43,6 +48,7 @@ class DocumentationSearch extends Documentation
         $query = Documentation::find();
 
         // add conditions that should always apply here
+        $query->joinWith(['postulant pt', 'postulant.person ps', 'postulant.period pr', 'requirement rq']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,7 +68,11 @@ class DocumentationSearch extends Documentation
             'requirement_id' => $this->requirement_id,
             'value' => $this->value,
             'postulant_id' => $this->postulant_id,
+            'pt.period_id' => $this->period_search
         ]);
+
+        $query->andFilterWhere(['LIKE', 'ps.name', $this->person_search]);
+        $query->andFilterWhere(['LIKE', 'rq.name', $this->requirement_search]);
 
         return $dataProvider;
     }

@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Postulant;
 use app\models\PostulantSearch;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * PostulantController implements the CRUD actions for Postulant model.
@@ -120,5 +122,26 @@ class PostulantController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionList($q = null, $id = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select(['pt.id', "CONCAT(ps.name, ', ', pr.name) AS text"])
+                ->from('{{%postulant}} pt')
+                ->innerJoin('{{%person}} ps', 'pt.person_id=ps.id')
+                ->innerJoin('{{%period}} pr', 'pt.period_id=pr.id')
+                ->where(['like', 'ps.name', $q])
+                ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        elseif ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => Postulant::findOne($id)->name];
+        }
+        return $out;
     }
 }

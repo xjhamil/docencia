@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Documentation;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -29,9 +30,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'requirement_id',
-            'value',
-            'postulant_id',
+            [
+                'label' => 'Periodo',
+                'value' => $model->postulant->period->name
+            ],
+            [
+                'label' => 'Postulante',
+                'value' => $model->postulant->person->name
+            ],
+            [
+                'attribute' => 'requirement_id',
+                'value' => $model->requirement->name
+            ],
+            [
+                'attribute' => 'value',
+                'value' => Documentation::VALUES[$model->value]
+            ],
+
         ],
     ]) ?>
 
