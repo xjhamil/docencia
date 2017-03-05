@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Teaching;
 use app\models\TeachingSearch;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TeachingController implements the CRUD actions for Teaching model.
@@ -120,5 +122,31 @@ class TeachingController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionList($q = null, $id = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select([
+                    't.id',
+                    "CONCAT(p.name, ', ', c.name, ', ', d.name) AS text",
+                    't.person_id', 't.school_id', 't.period_id'
+                ])
+                ->from('{{%teaching}} t')
+                ->innerJoin('{{%person}} p', 't.person_id=p.id')
+                ->innerJoin('{{%school}} c', 't.school_id=c.id')
+                ->innerJoin('{{%period}} d', 't.period_id=d.id')
+                ->where(['like', 'p.name', $q])
+                ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        elseif ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => Teaching::findOne($id)->getSummary()];
+        }
+        return $out;
     }
 }

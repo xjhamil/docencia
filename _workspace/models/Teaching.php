@@ -100,4 +100,10 @@ class Teaching extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Subject::className(), ['id' => 'subject_id']);
     }
+
+    public function getSummary() {
+        if(!$this->isNewRecord)
+            return $this->person->name . ', ' . $this->school->name . ', ' . $this->period->name;
+        return '';
+    }
 }
