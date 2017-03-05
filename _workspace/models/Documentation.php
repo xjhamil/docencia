@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "{{%documentation}}".
  *
  * @property integer $id
- * @property integer $teaching_id
  * @property integer $requirement_id
  * @property integer $value
+ * @property integer $postulant_id
  *
+ * @property Postulant $postulant
  * @property Requirement $requirement
- * @property Teaching $teaching
  */
 class Documentation extends \yii\db\ActiveRecord
 {
@@ -31,10 +31,10 @@ class Documentation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teaching_id', 'requirement_id', 'value'], 'required'],
-            [['teaching_id', 'requirement_id', 'value'], 'integer'],
+            [['requirement_id', 'value', 'postulant_id'], 'required'],
+            [['requirement_id', 'value', 'postulant_id'], 'integer'],
+            [['postulant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Postulant::className(), 'targetAttribute' => ['postulant_id' => 'id']],
             [['requirement_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requirement::className(), 'targetAttribute' => ['requirement_id' => 'id']],
-            [['teaching_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teaching::className(), 'targetAttribute' => ['teaching_id' => 'id']],
         ];
     }
 
@@ -45,10 +45,18 @@ class Documentation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'teaching_id' => 'Teaching ID',
             'requirement_id' => 'Requirement ID',
             'value' => 'Value',
+            'postulant_id' => 'Postulant ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPostulant()
+    {
+        return $this->hasOne(Postulant::className(), ['id' => 'postulant_id']);
     }
 
     /**
@@ -57,13 +65,5 @@ class Documentation extends \yii\db\ActiveRecord
     public function getRequirement()
     {
         return $this->hasOne(Requirement::className(), ['id' => 'requirement_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTeaching()
-    {
-        return $this->hasOne(Teaching::className(), ['id' => 'teaching_id']);
     }
 }
