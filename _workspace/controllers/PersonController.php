@@ -6,10 +6,12 @@ use Yii;
 use app\models\Person;
 use app\models\PersonSearch;
 use yii\db\Query;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * PersonController implements the CRUD actions for Person model.
@@ -66,14 +68,29 @@ class PersonController extends Controller
     public function actionCreate()
     {
         $model = new Person();
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $model->load($request->post());
+            $imageFile = UploadedFile::getInstance($model, 'picture');
+            $directory = Yii::getAlias('@webroot/upload/');
+            if (!is_dir($directory)) FileHelper::createDirectory($directory);
+            if($imageFile) {
+                $uid = uniqid(time(), true);
+                $fileName = $uid . '.' . $imageFile->extension;
+                $filePath = $directory . $fileName;
+                if ($imageFile->saveAs($filePath)) $model->picture = $fileName;
+                else $model->addError('picture', 'Ha Ocurrido un Error al subir la Imagen');
+            }
+
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -85,14 +102,32 @@ class PersonController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $oldPicture = $model->picture;
+            $model->load($request->post());
+            $imageFile = UploadedFile::getInstance($model, 'picture');
+            $directory = Yii::getAlias('@webroot/upload');
+            if (!is_dir($directory)) FileHelper::createDirectory($directory);
+            if($imageFile) {
+                $uid = uniqid(time(), true);
+                $fileName = $uid . '.' . $imageFile->extension;
+                $filePath = $directory . DIRECTORY_SEPARATOR . $fileName;
+                $oldPath = $directory . DIRECTORY_SEPARATOR . $oldPicture;
+                if(file_exists($oldPath) && is_file($oldPath)) unlink($oldPath);
+                if ($imageFile->saveAs($filePath)) $model->picture = $fileName;
+                else $model->addError('picture', 'Ha Ocurrido un Error al subir la Imagen');
+            }
+
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -103,7 +138,11 @@ class PersonController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $directory = Yii::getAlias('@webroot/upload');
+        $filePath = $directory . DIRECTORY_SEPARATOR . $model->picture;
+        if(file_exists($filePath) && is_file($filePath)) unlink($filePath);
+        $model->delete();
 
         return $this->redirect(['index']);
     }
