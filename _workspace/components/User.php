@@ -16,6 +16,9 @@ class User extends WebUser
     {
         /* @var $identity IdentityInterface */
         $identity = $this->getIdentity();
-        return $identity->getRole() == $permissionName;
+        if($identity) {
+            return $identity->getRole() == $permissionName;
+        }
+        return false;
     }
 }

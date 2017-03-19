@@ -15,12 +15,12 @@ use app\components\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
  * @property string $role
  */
 class User extends ActiveRecord  implements IdentityInterface
 {
+    public $password;
+
     const ROLE_ADMIN = 'admin';
     const ROLE_DIRECTOR = 'director';
     const ROLE_SECRETARY = 'secretary';
@@ -31,6 +31,14 @@ class User extends ActiveRecord  implements IdentityInterface
         User::ROLE_SECRETARY => 'Secretaria',
     ];
 
+    const STATUS_ENABLED = 1;
+    const STATUS_DISABLED = 0;
+
+    const STATUSES = [
+        User::STATUS_ENABLED => 'Habilitado',
+        User::STATUS_DISABLED => 'Deshabilitado'
+    ];
+
     public static function tableName()
     {
         return '{{%user}}';
@@ -38,12 +46,11 @@ class User extends ActiveRecord  implements IdentityInterface
 
     public function rules() {
         return [
-            [['username', 'password_hash', 'email', 'auth_key', 'status', 'created_at', 'updated_at', 'role'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'email'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'email', 'auth_key', 'status', 'role'], 'required'],
+            [['username', 'password_hash', 'email', 'password'], 'string', 'max' => 255],
             [['auth_key', 'role'], 'string', 'max' => 32],
-            [['username'], 'unique'],
-            [['email'], 'unique'],
+            [['username', 'email'], 'unique'],
+            [['status'], 'integer'],
         ];
     }
 
@@ -67,7 +74,7 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return User::findOne($id);
+        return User::findOne(['id'=>$id,'status'=>User::STATUS_ENABLED]);
     }
 
     /**
@@ -86,7 +93,7 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return User::findOne(['username'=>$username]);
+        return User::findOne(['username'=>$username, 'status'=>User::STATUS_ENABLED]);
     }
 
     /**
