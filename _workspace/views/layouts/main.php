@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Sistema de Gestion Administrativa',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,8 +37,44 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            [
+                'label' => 'Personas',
+                'url' => ['/person/index'],
+                'items' => [
+                    ['label' => 'Nuevo', 'url' => ['/person/create']]
+                ]
+            ],
+
+            [
+                'label' => 'Docente',
+                'url' => ['/teaching/index'],
+                'items' => [
+                    ['label' => 'Asignar Docente', 'url' => ['/teaching/create']]
+                ]
+            ],
+
+
+            [
+                'label' => 'Documentacion',
+                'url' => ['/documentation/index'],
+                'items' => [
+                    ['label' => 'Requerisitos', 'url' => ['/documentation/index']]
+                ]
+            ],
+
+
+
+
+            [
+                'label' => 'Evaluación',
+                'url' => ['/evaluation/index'],
+                'items' => [
+                    ['label' => 'Evaluacion Docente', 'url' => ['/evaluation/index']]
+                ]
+            ],
+
+
+            ['label' => 'Asignaturas', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

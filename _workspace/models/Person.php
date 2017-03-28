@@ -60,6 +60,7 @@ class Person extends ActiveRecord
             [['status', 'gender'], 'integer'],
             [['birthdate'], 'safe'],
             [['identity', 'name', 'phone', 'address', 'picture'], 'string', 'max' => 255],
+            [['picture'], 'image']
         ];
     }
 

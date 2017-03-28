@@ -2,38 +2,79 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+use Yii;
+use yii\db\ActiveRecord;
+use app\components\IdentityInterface;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
+/**
+ * This is the model class for table "{{%user}}".
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $password_hash
+ * @property string $email
+ * @property string $auth_key
+ * @property integer $status
+ * @property string $role
+ */
+class User extends ActiveRecord  implements IdentityInterface
+{
+    public $password;
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_DIRECTOR = 'director';
+    const ROLE_SECRETARY = 'secretary';
+
+    const ROLES = [
+        User::ROLE_ADMIN => 'Administrador',
+        User::ROLE_DIRECTOR => 'Director',
+        User::ROLE_SECRETARY => 'Secretaria',
     ];
 
+    const STATUS_ENABLED = 1;
+    const STATUS_DISABLED = 0;
+
+    const STATUSES = [
+        User::STATUS_ENABLED => 'Habilitado',
+        User::STATUS_DISABLED => 'Deshabilitado'
+    ];
+
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
+
+    public function rules() {
+        return [
+            [['username', 'password_hash', 'email', 'auth_key', 'status', 'role'], 'required'],
+            [['username', 'password_hash', 'email', 'password'], 'string', 'max' => 255],
+            [['auth_key', 'role'], 'string', 'max' => 32],
+            [['username', 'email'], 'unique'],
+            [['status'], 'integer'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'password_hash' => 'Password Hash',
+            'email' => 'Email',
+            'auth_key' => 'Auth Key',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'role' => 'Role',
+        ];
+    }
 
     /**
      * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return User::findOne(['id'=>$id,'status'=>User::STATUS_ENABLED]);
     }
 
     /**
@@ -41,12 +82,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
         return null;
     }
 
@@ -58,13 +93,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return User::findOne(['username'=>$username, 'status'=>User::STATUS_ENABLED]);
     }
 
     /**
@@ -80,7 +109,11 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
+    }
+
+    public function getRole() {
+        return $this->role;
     }
 
     /**
@@ -88,7 +121,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**
@@ -99,6 +132,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password_hash);
     }
 }

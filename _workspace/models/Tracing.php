@@ -8,12 +8,16 @@ use Yii;
  * This is the model class for table "{{%tracing}}".
  *
  * @property integer $id
- * @property integer $teaching_id
  * @property string $date
- * @property integer $observation
+ * @property string $observation
+ * @property integer $person_id
+ * @property integer $period_id
+ * @property integer $school_id
  *
  * @property Evaluation[] $evaluations
- * @property Teaching $teaching
+ * @property Period $period
+ * @property Person $person
+ * @property School $school
  */
 class Tracing extends \yii\db\ActiveRecord
 {
@@ -31,10 +35,13 @@ class Tracing extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teaching_id', 'date', 'observation'], 'required'],
-            [['teaching_id', 'observation'], 'integer'],
+            [['date', 'person_id', 'period_id'], 'required'],
             [['date'], 'safe'],
-            [['teaching_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teaching::className(), 'targetAttribute' => ['teaching_id' => 'id']],
+            [['observation'], 'string'],
+            [['person_id', 'period_id', 'school_id'], 'integer'],
+            [['period_id'], 'exist', 'skipOnError' => true, 'targetClass' => Period::className(), 'targetAttribute' => ['period_id' => 'id']],
+            [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'id']],
+            [['school_id'], 'exist', 'skipOnError' => true, 'targetClass' => School::className(), 'targetAttribute' => ['school_id' => 'id']],
         ];
     }
 
@@ -45,9 +52,11 @@ class Tracing extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'teaching_id' => 'Teaching ID',
-            'date' => 'Date',
-            'observation' => 'Observation',
+            'date' => 'Fecha',
+            'observation' => 'Observacion',
+            'person_id' => 'Persona',
+            'period_id' => 'Periodo',
+            'school_id' => 'Colegio',
         ];
     }
 
@@ -62,8 +71,42 @@ class Tracing extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTeaching()
+    public function getPeriod()
     {
-        return $this->hasOne(Teaching::className(), ['id' => 'teaching_id']);
+        return $this->hasOne(Period::className(), ['id' => 'period_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerson()
+    {
+        return $this->hasOne(Person::className(), ['id' => 'person_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchool()
+    {
+        return $this->hasOne(School::className(), ['id' => 'school_id']);
+    }
+
+    public function getSummary() {
+        if(!$this->isNewRecord)
+            return $this->person->name . ', ' . $this->school->name . ', ' . $this->period->name;
+        return '';
+    }
+
+    public function saveEvaluations($params) {
+        $evaluations = $params['Evaluation'];
+        Evaluation::deleteAll(['tracing_id'=>$this->id]);
+        foreach ($evaluations as $indicator_id => $value) {
+            $evaluation = new Evaluation();
+            $evaluation->indicator_id = $indicator_id;
+            $evaluation->tracing_id = $this->id;
+            $evaluation->value = $value;
+            $evaluation->save();
+        }
     }
 }
