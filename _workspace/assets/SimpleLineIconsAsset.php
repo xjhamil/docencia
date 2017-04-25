@@ -7,22 +7,13 @@
 
 namespace app\assets;
 
-use yii\web\AssetBundle;
-
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends BaseAsset
+class SimpleLineIconsAsset extends BaseAsset
 {
     public $css = [
-        //'css/site.css',
-    ];
-    public $js = [
-        //'js/site.js',
-    ];
-    public $depends = [
-        'yii\web\YiiAsset',
-        'app\assets\MetronicAsset',
+        'assets/global/plugins/simple-line-icons/simple-line-icons.min.css',
     ];
 }

@@ -6,6 +6,7 @@ use Yii;
 use app\models\Person;
 use app\models\PersonSearch;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +31,17 @@ class PersonController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+
+
         ];
     }
 

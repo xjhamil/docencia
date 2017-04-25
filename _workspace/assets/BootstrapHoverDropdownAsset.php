@@ -7,22 +7,16 @@
 
 namespace app\assets;
 
-use yii\web\AssetBundle;
-
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends BaseAsset
+class BootstrapHoverDropdownAsset extends BaseAsset
 {
-    public $css = [
-        //'css/site.css',
-    ];
     public $js = [
-        //'js/site.js',
+        'assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'app\assets\MetronicAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 }
