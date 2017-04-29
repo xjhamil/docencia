@@ -75,4 +75,42 @@ class Postulant extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Person::className(), ['id' => 'person_id']);
     }
+
+    public static function Report() {
+        $query = Postulant::find();
+        $query->alias('postulant');
+        $query->select([
+            'period.name',
+            'SUM(IF(postulant.approved=1,1,0)) approved',
+            'SUM(IF(postulant.approved=0,1,0)) disapproved',
+        ]);
+        $query->innerJoin('{{%period}} period', 'postulant.period_id=period.id');
+        $query->groupBy('postulant.period_id');
+        $query->asArray(true);
+        return $query->all();
+    }
+
+    public static function Label($array) {
+        $result=[];
+        foreach ($array as $item) {
+            $result[] = $item['name'];
+        }
+        return $result;
+    }
+
+    public static function Approved($array) {
+        $result=[];
+        foreach ($array as $item) {
+            $result[] = intval($item['approved']);
+        }
+        return $result;
+    }
+
+    public static function Disapproved($array) {
+        $result=[];
+        foreach ($array as $item) {
+            $result[] = intval($item['disapproved']);
+        }
+        return $result;
+    }
 }

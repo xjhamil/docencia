@@ -106,4 +106,29 @@ class Teaching extends \yii\db\ActiveRecord
             return $this->person->name . ', ' . $this->school->name . ', ' . $this->period->name;
         return '';
     }
+
+    public static function Report() {
+        $query = Teaching::find();
+        $query->alias('t');
+        $query->select([
+            's.name',
+            'COUNT(t.id)*1 y'
+        ]);
+        $query->innerJoin('{{%school}} s', 't.school_id=s.id');
+        $query->groupBy('t.person_id');
+        $query->orderBy('s.name');
+        $query->asArray(true);
+        return $query->all();
+    }
+
+    public static function Data($array) {
+        $result=[];
+        foreach ($array as $item) {
+            $result[] = array(
+                'name' => $item['name'],
+                'y' => intval($item['y'])
+            );
+        }
+        return $result;
+    }
 }
