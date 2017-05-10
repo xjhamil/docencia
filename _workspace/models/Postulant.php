@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use app\components\UploadedFile;
 use Yii;
+use yii\db\Expression;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "tbl_postulant".
@@ -112,5 +115,65 @@ class Postulant extends \yii\db\ActiveRecord
             $result[] = intval($item['disapproved']);
         }
         return $result;
+    }
+
+    public function requirements() {
+        $array = array();
+
+        if($this->isNewRecord) {
+            $requirements = Requirement::find()
+                ->select(['id','name','type',new Expression("'' value")])
+                ->asArray()->all();
+        } else {
+            $requirements = Requirement::find()
+                ->alias('r')
+                ->select(['r.id','r.name','r.type','d.value'])
+                ->leftJoin('{{%documentation}} d', 'r.id=d.requirement_id')
+                ->where(['d.postulant_id'=>$this->id])
+                ->asArray()->all();
+        }
+
+        foreach ($requirements as $requirement) {
+            $array[] = [
+                'id' => $requirement['id'],
+                'name' => $requirement['name'],
+                'type' => $requirement['type'],
+                'value' => $requirement['value']
+            ];
+        }
+
+        return $array;
+    }
+
+    public function clearRequirements() {
+        $requirements = Documentation::find()
+            ->where(['postulant_id'=>$this->id])->all();
+        $directory = Yii::getAlias('@webroot/requirement');
+        foreach ($requirements as $requirement) {
+            $filePath = $directory . DIRECTORY_SEPARATOR . $requirement->value;
+            if(file_exists($filePath) && is_file($filePath)) unlink($filePath);
+        }
+        Documentation::deleteAll(['postulant_id'=>$this->id]);
+    }
+
+    /**
+     *
+     */
+    public function saveRequirements() {
+        $this->clearRequirements();
+        $directory = Yii::getAlias('@webroot/requirement');
+        if (!is_dir($directory)) FileHelper::createDirectory($directory);
+        $requirements = UploadedFile::getInstancesByName('Requirement');
+        foreach ($requirements as $id => $requirement) {
+            $uid = uniqid(time(), true);
+            $fileName = $uid . '.' . $requirement->extension;
+            $filePath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            $model = new Documentation();
+            $model->postulant_id = $this->id;
+            $model->requirement_id = $id;
+            $model->value = $fileName;
+            $requirement->saveAs($filePath);
+            $model->save();
+        }
     }
 }

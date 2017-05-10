@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Tracing */
 
-$this->title = 'Update Tracing: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Tracings', 'url' => ['index']];
+$this->title = 'Actualizar Evaluación: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Evaluación', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="tracing-update">
 

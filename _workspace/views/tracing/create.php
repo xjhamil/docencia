@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Tracing */
 
-$this->title = 'Create Tracing';
+$this->title = 'Crear Evaluación';
 $this->params['breadcrumbs'][] = ['label' => 'Tracings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

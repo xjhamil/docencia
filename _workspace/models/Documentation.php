@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $requirement_id
- * @property integer $value
+ * @property string $value
  * @property integer $postulant_id
  *
  * @property Postulant $postulant
@@ -40,7 +40,8 @@ class Documentation extends \yii\db\ActiveRecord
     {
         return [
             [['requirement_id', 'value', 'postulant_id'], 'required'],
-            [['requirement_id', 'value', 'postulant_id'], 'integer'],
+            [['requirement_id', 'postulant_id'], 'integer'],
+            [['value'], 'string', 'max' => 255],
             [['postulant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Postulant::className(), 'targetAttribute' => ['postulant_id' => 'id']],
             [['requirement_id'], 'exist', 'skipOnError' => true, 'targetClass' => Requirement::className(), 'targetAttribute' => ['requirement_id' => 'id']],
         ];
