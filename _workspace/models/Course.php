@@ -35,8 +35,8 @@ class Course extends ActiveRecord
         Course::GRADE_FIRST => 'Primero',
         Course::GRADE_SECOND => 'Segundo',
         Course::GRADE_THIRD => 'Tercero',
-        Course::GRADE_THIRD => 'Cuarto',
-        Course::GRADE_FOURTH => 'Quinto',
+        Course::GRADE_FOURTH => 'Cuarto',
+        Course::GRADE_FIFTH => 'Quinto',
         Course::GRADE_SIXTH => 'Sexto',
     ];
 

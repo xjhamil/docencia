@@ -290,20 +290,20 @@ $user = Yii::$app->user;
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-doc"></i>
-                                <span class="title">Requisitos Docente</span>
+                                <span class="title">Postulantes</span>
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['documentation/create']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['postulant/index']) ?>" class="nav-link">
                                         <i class="icon-docs"></i>
-                                        <span class="title">Carga de Requisitos</span>
+                                        <span class="title">Listado</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['documentation/index']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['postulant/create']) ?>" class="nav-link">
                                         <i class="icon-pencil"></i>
-                                        <span class="title">Detalle de Requisitos</span>
+                                        <span class="title">Nuevo</span>
                                     </a>
                                 </li>
 
@@ -311,19 +311,10 @@ $user = Yii::$app->user;
                             </ul>
                         </li>
 
-
-
-                        <li class="nav-item  ">
-                            <a href="<?= Url::to(['postulant/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-wallet"></i>
-                                <span class="title">Reunion de Aprobacion</span>
-                            </a>
-                        </li>
-
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-briefcase"></i>
-                                <span class="title">Asignacion Docente</span>
+                                <span class="title">Asignacion</span>
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
@@ -344,7 +335,7 @@ $user = Yii::$app->user;
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-note"></i>
-                                <span class="title">Evaluacion Docente</span>
+                                <span class="title">Evaluacion</span>
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">

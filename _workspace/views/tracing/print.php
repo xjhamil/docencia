@@ -23,6 +23,8 @@ $count = count($evaluations);
         y cumplimiento de funciones de los docentes en la Unidad Educativa asignada.
     </p>
 
+    <h2><?= $model->person->name ?></h2>
+
     <div class="table-responsive">
         <table class="table table-bordered table-condensed">
             <thead>

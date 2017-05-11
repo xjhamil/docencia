@@ -176,4 +176,16 @@ class Postulant extends \yii\db\ActiveRecord
             $model->save();
         }
     }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        Documentation::deleteAll(['postulant_id'=>$this->id]);
+        return true;
+    }
+
+
 }

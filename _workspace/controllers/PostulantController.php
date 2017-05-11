@@ -155,7 +155,8 @@ class PostulantController extends Controller
                 ->from('{{%postulant}} pt')
                 ->innerJoin('{{%person}} ps', 'pt.person_id=ps.id')
                 ->innerJoin('{{%period}} pr', 'pt.period_id=pr.id')
-                ->where(['like', 'ps.name', $q])
+                ->where(['pt.approved'=>1])
+                ->andWhere(['like', 'ps.name', $q])
                 ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();

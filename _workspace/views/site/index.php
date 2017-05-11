@@ -2,7 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use app\models\Person;
 use app\models\Postulant;
+use app\models\School;
 use dosamigos\highcharts\HighCharts;
 
 $this->title = 'My Yii Application';
@@ -118,7 +120,7 @@ $postulants = Postulant::Report();
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="1349">0</span>
+                    <span data-counter="counterup" data-value="1349"><?= Person::find()->count() ?></span>
                 </div>
                 <div class="desc"> New Feedbacks </div>
             </div>
@@ -131,7 +133,7 @@ $postulants = Postulant::Report();
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
+                    <span data-counter="counterup" data-value="12,5"><?= School::find()->count() ?></span></div>
                 <div class="desc"> Total Profit </div>
             </div>
         </a>
@@ -143,7 +145,7 @@ $postulants = Postulant::Report();
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="549">0</span>
+                    <span data-counter="counterup" data-value="549"><?= Postulant::find()->where(['approved'=>1])->count() ?></span>
                 </div>
                 <div class="desc"> New Orders </div>
             </div>
@@ -156,7 +158,7 @@ $postulants = Postulant::Report();
             </div>
             <div class="details">
                 <div class="number"> +
-                    <span data-counter="counterup" data-value="89"></span>% </div>
+                    <span data-counter="counterup" data-value="89"><?= Postulant::find()->where(['approved'=>0])->count() ?></span></div>
                 <div class="desc"> Brand Popularity </div>
             </div>
         </a>
@@ -188,7 +190,7 @@ $postulants = Postulant::Report();
                 HighCharts::widget([
                     'clientOptions' => [
                         'chart' => [
-                            'type' => 'line'
+                            'type' => 'bar'
                         ],
 
                         'title'=> [
@@ -273,7 +275,7 @@ $postulants = Postulant::Report();
                     HighCharts::widget([
                         'clientOptions' => [
                             'chart' => [
-                                'type' => 'pie'
+                                'type' => 'bar'
                             ],
 
                             'title'=> [
