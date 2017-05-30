@@ -314,7 +314,7 @@ $user = Yii::$app->user;
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-briefcase"></i>
-                                <span class="title">Asignacion</span>
+                                <span class="title">Asignación   </span>
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
@@ -325,7 +325,11 @@ $user = Yii::$app->user;
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['teaching/create']) ?>" class="nav-link">Asignar Docente</a>
+                                    <a href="<?= Url::to(['teaching/create']) ?>" class="nav-link">
+                                        <i class="icon-briefcase"></i>
+                                    <span>Asignar Docente</span>
+
+                                    </a>
                                 </li>
 
                             </ul>
@@ -341,12 +345,61 @@ $user = Yii::$app->user;
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="<?= Url::to(['tracing/index']) ?>" class="nav-link">
-                                        <i class="icon-user"></i>
+                                        <i class="icon-users"></i>
                                         <span class="title">Docentes Evaluados</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">Evaluar Docente</a>
+                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">
+                                        <i class="icon-user"></i>
+                                    <span>   Evaluar Docente</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-note"></i>
+                                <span class="title">Informes</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item">
+                                    <a href="<?= Url::to(['tracing/index']) ?>" class="nav-link">
+                                        <i class="icon-users"></i>
+                                        <span class="title">Informes de Docentes </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">
+                                        <i class="icon-user"></i>
+                                        <span>   Enviar Informe Docente</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-note"></i>
+                                <span class="title">Dotación Material</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item">
+                                    <a href="<?= Url::to(['tracing/index']) ?>" class="nav-link">
+                                        <i class="icon-users"></i>
+                                        <span class="title">Lista entrega materiales </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">
+                                        <i class="icon-user"></i>
+                                        <span>   Entrega de material </span>
+                                    </a>
                                 </li>
 
                             </ul>
@@ -354,9 +407,8 @@ $user = Yii::$app->user;
 
 
 
-
                         <li class="nav-item  ">
-                            <a href="<?= Url::to(['sale/index']) ?>" class="nav-link nav-toggle">
+                            <a href="<?= Url::to(['period/print?id=3']) ?>" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">Total Docentes</span>
                             </a>
@@ -371,13 +423,13 @@ $user = Yii::$app->user;
                             <h3 class="uppercase">Reportes</h3>
                         </li>
                         <li class="nav-item  ">
-                            <a href="<?= Url::to(['loan/index']) ?>" class="nav-link nav-toggle">
+                            <a href="<?= Url::to(['report/index']) ?>" class="nav-link nav-toggle">
                                 <i class="icon-bar-chart"></i>
                                 <span class="title">Gráficos</span>
                             </a>
                         </li>
                         <li class="nav-item  ">
-                            <a href="<?= Url::to(['expense/index']) ?>" class="nav-link nav-toggle">
+                            <a href="<?= Url::to(['period/print?id=3']) ?>" class="nav-link nav-toggle">
                                 <i class="icon-list"></i>
                                 <span class="title">Listas</span>
                             </a>
@@ -400,32 +452,38 @@ $user = Yii::$app->user;
 
                         <li class="nav-item  ">
                             <a href="<?= Url::to(['subject/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-chield"></i>
+                                <i class="icon-pencil"></i>
                                 <span class="title">Asignaturas</span>
                             </a>
                         </li>
 
                         <li class="nav-item  ">
                             <a href="<?= Url::to(['indicator/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-chield"></i>
+                                <i class="icon-note"></i>
                                 <span class="title">Indicadores</span>
                             </a>
                         </li>
 
                         <li class="nav-item  ">
                             <a href="<?= Url::to(['requirement/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-chield"></i>
+                                <i class="icon-ebook"></i>
                                 <span class="title">Requisitos</span>
                             </a>
                         </li>
 
                         <li class="nav-item  ">
                             <a href="<?= Url::to(['period/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-chield"></i>
+                                <i class="icon-calendar"></i>
                                 <span class="title">Gestión</span>
                             </a>
                         </li>
 
+                        <li class="nav-item  ">
+                            <a href="<?= Url::to(['period/index']) ?>" class="nav-link nav-toggle">
+                                <i class="icon-dvd"></i>
+                                <span class="title">Back up</span>
+                            </a>
+                        </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
                 </div>

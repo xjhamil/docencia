@@ -7,7 +7,7 @@ use app\models\Postulant;
 use app\models\School;
 use dosamigos\highcharts\HighCharts;
 
-$this->title = 'My Yii Application';
+$this->title = 'Unidad Desempeño Docente';
 $postulants = Postulant::Report();
 ?>
 
@@ -100,14 +100,14 @@ $postulants = Postulant::Report();
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <span>Dashboard</span>
+            <span>SISTEMA</span>
         </li>
     </ul>
 </div>
 <!-- END PAGE BAR -->
 <!-- BEGIN PAGE TITLE-->
-<h1 class="page-title"> Admin Dashboard
-    <small>statistics, charts, recent events and reports</small>
+<h1 class="page-title"> Panel de Administración
+    <small>Estadisticas, reportes</small>
 </h1>
 <!-- END PAGE TITLE-->
 <!-- END PAGE HEADER-->
@@ -122,7 +122,7 @@ $postulants = Postulant::Report();
                 <div class="number">
                     <span data-counter="counterup" data-value="1349"><?= Person::find()->count() ?></span>
                 </div>
-                <div class="desc"> New Feedbacks </div>
+                <div class="desc"> Personas en el sistema </div>
             </div>
         </a>
     </div>
@@ -134,7 +134,7 @@ $postulants = Postulant::Report();
             <div class="details">
                 <div class="number">
                     <span data-counter="counterup" data-value="12,5"><?= School::find()->count() ?></span></div>
-                <div class="desc"> Total Profit </div>
+                <div class="desc"> Total Unidades Educativas </div>
             </div>
         </a>
     </div>
@@ -147,7 +147,7 @@ $postulants = Postulant::Report();
                 <div class="number">
                     <span data-counter="counterup" data-value="549"><?= Postulant::find()->where(['approved'=>1])->count() ?></span>
                 </div>
-                <div class="desc"> New Orders </div>
+                <div class="desc"> Postulantes aprobados </div>
             </div>
         </a>
     </div>
@@ -159,7 +159,7 @@ $postulants = Postulant::Report();
             <div class="details">
                 <div class="number"> +
                     <span data-counter="counterup" data-value="89"><?= Postulant::find()->where(['approved'=>0])->count() ?></span></div>
-                <div class="desc"> Brand Popularity </div>
+                <div class="desc"> Postulantes desaprobados </div>
             </div>
         </a>
     </div>
@@ -275,7 +275,7 @@ $postulants = Postulant::Report();
                     HighCharts::widget([
                         'clientOptions' => [
                             'chart' => [
-                                'type' => 'bar'
+                                'type' => 'area'
                             ],
 
                             'title'=> [

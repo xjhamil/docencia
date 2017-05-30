@@ -118,7 +118,7 @@ class Teaching extends \yii\db\ActiveRecord
             'COUNT(t.id)*1 y'
         ]);
         $query->innerJoin('{{%school}} s', 't.school_id=s.id');
-        $query->groupBy('t.person_id');
+        $query->groupBy('t.school_id');
         $query->orderBy('s.name');
         $query->asArray(true);
         return $query->all();

@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = $model->person->name;
 $this->params['breadcrumbs'][] = ['label' => 'Postulante', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$documentations = $model->documentations;
+$directory = Yii::$app->homeUrl.'upload';
 ?>
 <div class="postulant-view">
 
@@ -37,5 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+
+    <?php foreach ($documentations as $documentation) : ?>
+
+        <img src="<?= $directory.'/'.$documentation->value ?>">
+
+    <?php endforeach; ?>
 
 </div>

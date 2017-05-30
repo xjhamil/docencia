@@ -148,7 +148,7 @@ class Postulant extends \yii\db\ActiveRecord
     public function clearRequirements() {
         $requirements = Documentation::find()
             ->where(['postulant_id'=>$this->id])->all();
-        $directory = Yii::getAlias('@webroot/requirement');
+        $directory = Yii::getAlias('@webroot/upload');
         foreach ($requirements as $requirement) {
             $filePath = $directory . DIRECTORY_SEPARATOR . $requirement->value;
             if(file_exists($filePath) && is_file($filePath)) unlink($filePath);
@@ -161,17 +161,21 @@ class Postulant extends \yii\db\ActiveRecord
      */
     public function saveRequirements() {
         $this->clearRequirements();
-        $directory = Yii::getAlias('@webroot/requirement');
-        if (!is_dir($directory)) FileHelper::createDirectory($directory);
+        $parent = Yii::getAlias('@webroot/upload');
         $requirements = UploadedFile::getInstancesByName('Requirement');
         foreach ($requirements as $id => $requirement) {
             $uid = uniqid(time(), true);
-            $fileName = $uid . '.' . $requirement->extension;
+            $seg1 = substr($uid, 0, 4);
+            $seg2 = substr($uid, 4, 4);
+            $seg3 = substr($uid, 8);
+            $directory = $parent.'/'.$seg1.'/'.$seg2.'/';
+            if (!is_dir($directory)) FileHelper::createDirectory($directory);
+            $fileName = $seg3 . '.' . $requirement->extension;
             $filePath = $directory . DIRECTORY_SEPARATOR . $fileName;
             $model = new Documentation();
             $model->postulant_id = $this->id;
             $model->requirement_id = $id;
-            $model->value = $fileName;
+            $model->value = $seg1.'/'.$seg2.'/'.$fileName;
             $requirement->saveAs($filePath);
             $model->save();
         }
