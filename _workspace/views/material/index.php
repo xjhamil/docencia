@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ReportSearch */
+/* @var $searchModel app\models\MaterialSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Informes';
+$this->title = 'Materials';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="report-index">
+<div class="material-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Crear Informe', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Material', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,12 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            'id',
             [
                 'attribute'=>'postulant_search',
                 'value' => function($model) {
                     return $model->person_name . ', ' . $model->period_name;
                 }
             ],
+            'date:date',
             'description',
 
             [

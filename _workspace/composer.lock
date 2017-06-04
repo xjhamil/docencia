@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8a5206ed6f14cd6fcef59c0fd70945e1",
-    "content-hash": "0bebdc61dced021399abe54e30703502",
+    "hash": "ff66ae8b8b3678bd2af6de4a21970692",
+    "content-hash": "bff3bd41ad58fa9e5f4d7eccdcefbe89",
     "packages": [
         {
             "name": "2amigos/yii2-highcharts-widget",
@@ -1722,6 +1722,48 @@
                 "pdf"
             ],
             "time": "2015-11-30 10:53:14"
+        },
+        {
+            "name": "spanjeta/yii2-backup",
+            "version": "v2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spanjeta/yii2-backup.git",
+                "reference": "0d84b8eacf3269578f855f5a68fcb8075beda71c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spanjeta/yii2-backup/zipball/0d84b8eacf3269578f855f5a68fcb8075beda71c",
+                "reference": "0d84b8eacf3269578f855f5a68fcb8075beda71c",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "spanjeta\\modules\\backup\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Shiv Charan Panjeta",
+                    "email": "shivcharan.panjeta@gmail.com"
+                }
+            ],
+            "description": "Database Backup and Restore functionality",
+            "keywords": [
+                "backup",
+                "database",
+                "restore",
+                "yii2"
+            ],
+            "time": "2016-10-03 06:37:44"
         },
         {
             "name": "swiftmailer/swiftmailer",

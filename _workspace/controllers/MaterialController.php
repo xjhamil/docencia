@@ -4,21 +4,16 @@ namespace app\controllers;
 
 use kartik\mpdf\Pdf;
 use Yii;
-use app\models\Postulant;
-use app\models\PostulantSearch;
-use yii\db\Query;
-use yii\filters\AccessControl;
-use yii\helpers\FileHelper;
+use app\models\Material;
+use app\models\MaterialSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
-use yii\web\UploadedFile;
 
 /**
- * PostulantController implements the CRUD actions for Postulant model.
+ * MaterialController implements the CRUD actions for Material model.
  */
-class PostulantController extends Controller
+class MaterialController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,26 +27,16 @@ class PostulantController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ]
         ];
     }
 
     /**
-     * Lists all Postulant models.
+     * Lists all Material models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PostulantSearch();
+        $searchModel = new MaterialSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -61,7 +46,7 @@ class PostulantController extends Controller
     }
 
     /**
-     * Displays a single Postulant model.
+     * Displays a single Material model.
      * @param integer $id
      * @return mixed
      */
@@ -73,30 +58,25 @@ class PostulantController extends Controller
     }
 
     /**
-     * Creates a new Postulant model.
+     * Creates a new Material model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Postulant();
-        $request = Yii::$app->request;
+        $model = new Material();
 
-        if($request->isPost) {
-            $model->load($request->post());
-            if($model->save()) {
-                $model->saveRequirements();
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
-     * Updates an existing Postulant model.
+     * Updates an existing Material model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -104,23 +84,18 @@ class PostulantController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $request = Yii::$app->request;
 
-        if($request->isPost) {
-            $model->load($request->post());
-            if($model->save()) {
-                $model->saveRequirements();
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
-     * Deletes an existing Postulant model.
+     * Deletes an existing Material model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -133,41 +108,19 @@ class PostulantController extends Controller
     }
 
     /**
-     * Finds the Postulant model based on its primary key value.
+     * Finds the Material model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Postulant the loaded model
+     * @return Material the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Postulant::findOne($id)) !== null) {
+        if (($model = Material::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionList($q = null, $id = null) {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q)) {
-            $query = new Query;
-            $query->select(['pt.id', "CONCAT(ps.name, ', ', pr.name) AS text"])
-                ->from('{{%postulant}} pt')
-                ->innerJoin('{{%person}} ps', 'pt.person_id=ps.id')
-                ->innerJoin('{{%period}} pr', 'pt.period_id=pr.id')
-                ->where(['pt.approved'=>1])
-                ->andWhere(['like', 'ps.name', $q])
-                ->limit(20);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            $out['results'] = array_values($data);
-        }
-        elseif ($id > 0) {
-            $out['results'] = ['id' => $id, 'text' => Postulant::findOne($id)->name];
-        }
-        return $out;
     }
 
     public function actionPrint($id)

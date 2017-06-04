@@ -60,7 +60,8 @@ class Person extends ActiveRecord
             [['status', 'gender'], 'integer'],
             [['birthdate'], 'safe'],
             [['identity', 'name', 'phone', 'address', 'picture'], 'string', 'max' => 255],
-            [['picture'], 'image']
+            [['picture'], 'image', 'maxWidth'=>1024, 'maxHeight'=>768, 'maxSize'=>2048],
+            ['identity', 'string', 'length' => [7, 8], 'message' => 'Hakuna Matata'],
         ];
     }
 

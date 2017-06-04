@@ -367,13 +367,13 @@ $user = Yii::$app->user;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['tracing/index']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['report/index']) ?>" class="nav-link">
                                         <i class="icon-users"></i>
                                         <span class="title">Informes de Docentes </span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['report/create']) ?>" class="nav-link">
                                         <i class="icon-user"></i>
                                         <span>   Enviar Informe Docente</span>
                                     </a>
@@ -423,7 +423,7 @@ $user = Yii::$app->user;
                             <h3 class="uppercase">Reportes</h3>
                         </li>
                         <li class="nav-item  ">
-                            <a href="<?= Url::to(['report/index']) ?>" class="nav-link nav-toggle">
+                            <a href="<?= Url::to(['report/graph']) ?>" class="nav-link nav-toggle">
                                 <i class="icon-bar-chart"></i>
                                 <span class="title">Gráficos</span>
                             </a>
@@ -479,7 +479,7 @@ $user = Yii::$app->user;
                         </li>
 
                         <li class="nav-item  ">
-                            <a href="<?= Url::to(['period/index']) ?>" class="nav-link nav-toggle">
+                            <a href="<?= $baseUrl . 'backup' ?>" class="nav-link nav-toggle">
                                 <i class="icon-dvd"></i>
                                 <span class="title">Back up</span>
                             </a>

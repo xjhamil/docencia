@@ -53,8 +53,15 @@ $requirements = $model->requirements();
 
                 <label class="control-label"><?= $requirement['name'] ?></label>
                 <?= FileInput::widget([
+                    'options' => ['accept' => 'image/*'],
                     'name' => 'Requirement['.$requirement['id'].']',
-                    'value' => $requirement['value']
+                    'value' => $requirement['value'],
+                    'pluginOptions' => [
+                        'showPreview' => false,
+                        'showCaption' => false,
+                        'showRemove' => false,
+                        'showUpload' => false
+                    ]
                 ]); ?>
 
             <?php endforeach; ?>
