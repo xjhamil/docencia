@@ -2,14 +2,18 @@
 
 namespace app\controllers;
 
+use kartik\mpdf\Pdf;
 use Yii;
 use app\models\Postulant;
 use app\models\PostulantSearch;
 use yii\db\Query;
+use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * PostulantController implements the CRUD actions for Postulant model.
@@ -28,6 +32,16 @@ class PostulantController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
         ];
     }
 
@@ -66,14 +80,19 @@ class PostulantController extends Controller
     public function actionCreate()
     {
         $model = new Postulant();
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $model->load($request->post());
+            if($model->save()) {
+                $model->saveRequirements();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -85,14 +104,19 @@ class PostulantController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $model->load($request->post());
+            if($model->save()) {
+                $model->saveRequirements();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -133,7 +157,8 @@ class PostulantController extends Controller
                 ->from('{{%postulant}} pt')
                 ->innerJoin('{{%person}} ps', 'pt.person_id=ps.id')
                 ->innerJoin('{{%period}} pr', 'pt.period_id=pr.id')
-                ->where(['like', 'ps.name', $q])
+                ->where(['pt.approved'=>1])
+                ->andWhere(['like', 'ps.name', $q])
                 ->limit(20);
             $command = $query->createCommand();
             $data = $command->queryAll();
@@ -143,5 +168,42 @@ class PostulantController extends Controller
             $out['results'] = ['id' => $id, 'text' => Postulant::findOne($id)->name];
         }
         return $out;
+    }
+
+    public function actionPrint($id)
+    {
+        //$this->layout = 'print';
+        $content = $this->renderPartial('print', [
+            'model' => $this->findModel($id),
+        ]);
+
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_UTF8,
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_LANDSCAPE,
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER,
+            // your html content input
+            'content' => $content,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+            // set mPDF properties on the fly
+            'options' => ['title' => 'Krajee Report Title'],
+            // call mPDF methods on the fly
+            'methods' => [
+                'SetHeader'=>['Krajee Report Header'],
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+
+        // return the pdf output as per the destination setting
+        return $pdf->render();
     }
 }

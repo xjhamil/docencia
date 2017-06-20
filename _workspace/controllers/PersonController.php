@@ -6,6 +6,7 @@ use Yii;
 use app\models\Person;
 use app\models\PersonSearch;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +31,17 @@ class PersonController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+
+
         ];
     }
 
@@ -73,13 +85,17 @@ class PersonController extends Controller
         if($request->isPost) {
             $model->load($request->post());
             $imageFile = UploadedFile::getInstance($model, 'picture');
-            $directory = Yii::getAlias('@webroot/upload/');
-            if (!is_dir($directory)) FileHelper::createDirectory($directory);
             if($imageFile) {
                 $uid = uniqid(time(), true);
-                $fileName = $uid . '.' . $imageFile->extension;
+                $seg1 = substr($uid, 0, 4);
+                $seg2 = substr($uid, 4, 4);
+                $seg3 = substr($uid, 8);
+                $directory = Yii::getAlias('@webroot/upload/'.$seg1.'/'.$seg2.'/');
+                if (!is_dir($directory)) FileHelper::createDirectory($directory);
+                $fileName = $seg3 . '.' . $imageFile->extension;
                 $filePath = $directory . $fileName;
-                if ($imageFile->saveAs($filePath)) $model->picture = $fileName;
+                if ($imageFile->saveAs($filePath))
+                    $model->picture = $seg1.'/'.$seg2.'/'.$fileName;
                 else $model->addError('picture', 'Ha Ocurrido un Error al subir la Imagen');
             }
 
@@ -108,15 +124,19 @@ class PersonController extends Controller
             $oldPicture = $model->picture;
             $model->load($request->post());
             $imageFile = UploadedFile::getInstance($model, 'picture');
-            $directory = Yii::getAlias('@webroot/upload');
-            if (!is_dir($directory)) FileHelper::createDirectory($directory);
             if($imageFile) {
                 $uid = uniqid(time(), true);
-                $fileName = $uid . '.' . $imageFile->extension;
+                $seg1 = substr($uid, 0, 4);
+                $seg2 = substr($uid, 4, 4);
+                $seg3 = substr($uid, 8);
+                $directory = Yii::getAlias('@webroot/upload/'.$seg1.'/'.$seg2.'/');
+                if (!is_dir($directory)) FileHelper::createDirectory($directory);
+                $fileName = $seg3 . '.' . $imageFile->extension;
                 $filePath = $directory . DIRECTORY_SEPARATOR . $fileName;
                 $oldPath = $directory . DIRECTORY_SEPARATOR . $oldPicture;
                 if(file_exists($oldPath) && is_file($oldPath)) unlink($oldPath);
-                if ($imageFile->saveAs($filePath)) $model->picture = $fileName;
+                if ($imageFile->saveAs($filePath))
+                    $model->picture = $seg1.'/'.$seg2.'/'.$fileName;
                 else $model->addError('picture', 'Ha Ocurrido un Error al subir la Imagen');
             }
 

@@ -11,7 +11,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TracingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tracings';
+$this->title = 'Evaluación Docente';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tracing-index">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Tracing', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Evaluación', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -63,7 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view} {update} {delete} {print}',
                 'buttons' => [
                     'print' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-print"></span>', $url);
+                        return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, [
+                            'target' => '_blank'
+                        ]);
                     }
                 ]
             ],

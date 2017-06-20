@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Postulant;
 use Yii;
 use app\models\Teaching;
 use app\models\TeachingSearch;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -28,6 +30,16 @@ class TeachingController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+
         ];
     }
 
@@ -66,14 +78,21 @@ class TeachingController extends Controller
     public function actionCreate()
     {
         $model = new Teaching();
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $model->load($request->post());
+            $postulant = Postulant::findOne($model->postulant_id);
+            $model->person_id = $postulant->person_id;
+            $model->period_id = $postulant->period_id;
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -85,14 +104,21 @@ class TeachingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $request = Yii::$app->request;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($request->isPost) {
+            $model->load($request->post());
+            $postulant = Postulant::findOne($model->postulant_id);
+            $model->person_id = $postulant->person_id;
+            $model->period_id = $postulant->period_id;
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

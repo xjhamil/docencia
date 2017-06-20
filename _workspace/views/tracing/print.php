@@ -10,6 +10,7 @@ $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Seguimientos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$directory = Yii::$app->homeUrl.'upload';
 $evaluations = $model->evaluations;
 $count = count($evaluations);
 ?>
@@ -22,6 +23,10 @@ $count = count($evaluations);
         a fin de realizar la supervisión y verificar la permanencia, responsabilidad
         y cumplimiento de funciones de los docentes en la Unidad Educativa asignada.
     </p>
+
+    <h2><?= $model->person->name ?></h2>
+
+    <img src="<?= $directory . '/' . $model->person->picture ?>" width="200px">
 
     <div class="table-responsive">
         <table class="table table-bordered table-condensed">

@@ -22,6 +22,8 @@ use Yii;
  */
 class Teaching extends \yii\db\ActiveRecord
 {
+    public $postulant_id;
+
     /**
      * @inheritdoc
      */
@@ -36,8 +38,8 @@ class Teaching extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id'], 'required'],
-            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id'], 'integer'],
+            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id', 'postulant_id'], 'required'],
+            [['person_id', 'period_id', 'school_id', 'course_id', 'subject_id', 'postulant_id'], 'integer'],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
             [['period_id'], 'exist', 'skipOnError' => true, 'targetClass' => Period::className(), 'targetAttribute' => ['period_id' => 'id']],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'id']],
@@ -58,6 +60,7 @@ class Teaching extends \yii\db\ActiveRecord
             'school_id' => 'Escuela',
             'course_id' => 'Curso',
             'subject_id' => 'Asignatura',
+            'postulant_id' => 'Postulante'
         ];
     }
 
@@ -105,5 +108,30 @@ class Teaching extends \yii\db\ActiveRecord
         if(!$this->isNewRecord)
             return $this->person->name . ', ' . $this->school->name . ', ' . $this->period->name;
         return '';
+    }
+
+    public static function Report() {
+        $query = Teaching::find();
+        $query->alias('t');
+        $query->select([
+            's.name',
+            'COUNT(t.id)*1 y'
+        ]);
+        $query->innerJoin('{{%school}} s', 't.school_id=s.id');
+        $query->groupBy('t.school_id');
+        $query->orderBy('s.name');
+        $query->asArray(true);
+        return $query->all();
+    }
+
+    public static function Data($array) {
+        $result=[];
+        foreach ($array as $item) {
+            $result[] = array(
+                'name' => $item['name'],
+                'y' => intval($item['y'])
+            );
+        }
+        return $result;
     }
 }

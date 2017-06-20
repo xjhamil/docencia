@@ -18,7 +18,10 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "kartik-v/yii2-widgets": "*"
+        "kartik-v/yii2-widgets": "*",
+        "2amigos/yii2-highcharts-widget" : "~1.0",
+        "kartik-v/yii2-mpdf": "*",
+        "spanjeta/yii2-backup": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
