@@ -173,17 +173,10 @@ $postulants = Postulant::Report();
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-bar-chart font-dark hide"></i>
-                    <span class="caption-subject font-dark bold uppercase">Site Visits</span>
-                    <span class="caption-helper">weekly stats...</span>
+                    <span class="caption-subject font-dark bold uppercase">Reporte Gráfico de Barras</span>
+                    <span class="caption-helper">aprobados y no aprobados</span>
                 </div>
-                <div class="actions">
-                    <div class="btn-group btn-group-devided" data-toggle="buttons">
-                        <label class="btn red btn-outline btn-circle btn-sm active">
-                            <input type="radio" name="options" class="toggle" id="option1">New</label>
-                        <label class="btn red btn-outline btn-circle btn-sm">
-                            <input type="radio" name="options" class="toggle" id="option2">Returning</label>
-                    </div>
-                </div>
+
             </div>
             <div class="portlet-body">
                 <?=
@@ -236,40 +229,10 @@ $postulants = Postulant::Report();
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-share font-red-sunglo hide"></i>
-                    <span class="caption-subject font-dark bold uppercase">Revenue</span>
-                    <span class="caption-helper">monthly stats...</span>
+                    <span class="caption-subject font-dark bold uppercase">Reportes de tipo área</span>
+                    <span class="caption-helper">por gestión</span>
                 </div>
-                <div class="actions">
-                    <div class="btn-group">
-                        <a href="" class="btn dark btn-outline btn-circle btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Filter Range
-                            <span class="fa fa-angle-down"> </span>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:;"> Q1 2014
-                                    <span class="label label-sm label-default"> past </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;"> Q2 2014
-                                    <span class="label label-sm label-default"> past </span>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="javascript:;"> Q3 2014
-                                    <span class="label label-sm label-success"> current </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;"> Q4 2014
-                                    <span class="label label-sm label-warning"> upcoming </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="portlet-body">
+
                 <div class="portlet-body">
                     <?=
                     HighCharts::widget([

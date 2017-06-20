@@ -50,9 +50,9 @@ class Material extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'postulant_id' => 'Postulant ID',
-            'date' => 'Date',
-            'description' => 'Description',
+            'postulant_id' => 'Postulante',
+            'date' => 'Fecha',
+            'description' => 'Descripción',
         ];
     }
 

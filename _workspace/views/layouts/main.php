@@ -390,13 +390,13 @@ $user = Yii::$app->user;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['tracing/index']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['material/index']) ?>" class="nav-link">
                                         <i class="icon-users"></i>
                                         <span class="title">Lista entrega materiales </span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= Url::to(['tracing/create']) ?>" class="nav-link">
+                                    <a href="<?= Url::to(['material/create']) ?>" class="nav-link">
                                         <i class="icon-user"></i>
                                         <span>   Entrega de material </span>
                                     </a>
@@ -466,7 +466,7 @@ $user = Yii::$app->user;
 
                         <li class="nav-item  ">
                             <a href="<?= Url::to(['requirement/index']) ?>" class="nav-link nav-toggle">
-                                <i class="icon-ebook"></i>
+                                <i class="icon-bars"></i>
                                 <span class="title">Requisitos</span>
                             </a>
                         </li>
@@ -480,7 +480,7 @@ $user = Yii::$app->user;
 
                         <li class="nav-item  ">
                             <a href="<?= $baseUrl . 'backup' ?>" class="nav-link nav-toggle">
-                                <i class="icon-dvd"></i>
+                                <i class="icon-cloud"></i>
                                 <span class="title">Back up</span>
                             </a>
                         </li>

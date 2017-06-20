@@ -57,10 +57,10 @@ $requirements = $model->requirements();
                     'name' => 'Requirement['.$requirement['id'].']',
                     'value' => $requirement['value'],
                     'pluginOptions' => [
-                        'showPreview' => false,
-                        'showCaption' => false,
-                        'showRemove' => false,
-                        'showUpload' => false
+                        'showPreview' => true,
+                        'showCaption' => true,
+                        'showRemove' => true,
+                        'showUpload' => true,
                     ]
                 ]); ?>
 
